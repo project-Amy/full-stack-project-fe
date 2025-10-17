@@ -1,9 +1,29 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import type { Navigation } from "./types/navigation";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import AuthMiddleware from "./components/AuthMiddleware";
 
 export default function App() {
-  const navigation: Navigation = [{ path: "/", element: <Home /> }];
+  const navigation: Navigation = [
+    {
+      path: "/",
+      element: (
+        <AuthMiddleware>
+          <Home />
+        </AuthMiddleware>
+      ),
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+  ];
 
   return (
     <BrowserRouter>
