@@ -1,8 +1,8 @@
-import { Endpoints } from "../api/endpoints";
-import { invalidateQuery, useMutation } from "../api/query";
-import { BASE_URL } from "../constant/data";
-import type { CreateBoardForm } from "../types/board";
-import useAuthenticatedFetch from "./useAuthenticatedFetch";
+import { Endpoints } from "../../api/endpoints";
+import { invalidateQuery, useMutation } from "../../api/query";
+import { BASE_URL } from "../../constant/data";
+import type { CreateBoardForm } from "../../types/board";
+import useAuthenticatedFetch from "../useAuthenticatedFetch";
 
 export const useCreateBoard = () => {
   const { authenticatedFetch } = useAuthenticatedFetch();

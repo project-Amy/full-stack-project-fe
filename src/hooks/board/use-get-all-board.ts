@@ -1,8 +1,8 @@
-import { Endpoints } from "../api/endpoints";
-import { useQuery, queryConfig } from "../api/query";
-import { BASE_URL } from "../constant/data";
-import type { Board } from "../types/board";
-import useAuthenticatedFetch from "./useAuthenticatedFetch";
+import { Endpoints } from "../../api/endpoints";
+import { useQuery, queryConfig } from "../../api/query";
+import { BASE_URL } from "../../constant/data";
+import type { Board } from "../../types/board";
+import useAuthenticatedFetch from "../useAuthenticatedFetch";
 
 interface ResponseGetAllBoards {
   success: boolean;

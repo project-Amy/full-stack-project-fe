@@ -1,15 +1,23 @@
 import { useState } from "react";
-import { Button, Card, Spin, Empty, Row, Col, Layout, Space } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import CreateBoardModal from "../components/modal/CreateBoardModal";
-import { useGetAllBoard } from "../hooks/use-get-all-board";
+import { Button, Card, Spin, Empty, Row, Col, Layout, Badge } from "antd";
+import { PlusOutlined, MailOutlined } from "@ant-design/icons";
+import CreateBoardModal from "../components/board/modal/CreateBoardModal";
+import PendingInvitesModal from "../components/invitation/PendingInvitesModal";
+import { useGetAllBoard } from "../hooks/board/use-get-all-board";
+import { useGetUserInvitations } from "../hooks/invitation/use-get-pending-invitations";
 import AuthBackground from "../components/Background/AuthBackground";
 import { Content } from "antd/es/layout/layout";
 import Navbar from "../components/navigation/Navbar";
+import type { Board } from "../types/board";
+import BoardCard from "../components/board/BoardCard";
 
 export default function Home() {
   const { data: data, isLoading } = useGetAllBoard();
+  const { data: invitations } = useGetUserInvitations();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPendingInvitesModalOpen, setIsPendingInvitesModalOpen] = useState(false);
+
+  const pendingInvitationsCount = invitations?.filter((inv) => inv.status === "PENDING").length || 0;
 
   if (isLoading) {
     return (
@@ -25,27 +33,26 @@ export default function Home() {
       <AuthBackground />
       <Navbar />
       <CreateBoardModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <PendingInvitesModal open={isPendingInvitesModalOpen} onClose={() => setIsPendingInvitesModalOpen(false)} />
       <Content className="relative z-10 flex flex-col">
-        <div className="max-w-100 p-4">
-          <Button type="primary" icon={<PlusOutlined />} size="large" onClick={() => setIsModalOpen(true)}>
-            Crea nuova board
-          </Button>
+        <div className="max-w-7xl mx-auto p-6 w-full">
+          <div className="flex gap-4 mb-4">
+            <Button type="primary" icon={<PlusOutlined />} size="large" onClick={() => setIsModalOpen(true)}>
+              Create new board
+            </Button>
+            <Badge count={pendingInvitationsCount} offset={[-5, 5]}>
+              <Button icon={<MailOutlined />} size="large" onClick={() => setIsPendingInvitesModalOpen(true)}>
+                Pending Invites
+              </Button>
+            </Badge>
+          </div>
         </div>
         {data && data?.length > 0 ? (
           <div className="max-w-7xl mx-auto p-6 w-full">
             <Row gutter={[16, 16]}>
-              {data.map((data) => (
-                <Col xs={24} sm={12} md={8} lg={6} key={data.id}>
-                  <Card
-                    hoverable
-                    className="h-full"
-                    onClick={() => console.log("Redirect to", data.id)}
-                    title={data.name}
-                  >
-                    <Space direction="vertical" size="small" className="w-full">
-                      <p className="text-gray-600 m-0">{data.description || "Nessuna descrizione"}</p>
-                    </Space>
-                  </Card>
+              {data.map((board: Board) => (
+                <Col xs={24} sm={12} md={8} lg={6} key={board.id}>
+                  <BoardCard data={board} />
                 </Col>
               ))}
             </Row>
