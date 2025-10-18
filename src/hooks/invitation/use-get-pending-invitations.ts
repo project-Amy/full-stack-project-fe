@@ -26,7 +26,7 @@ export const useGetUserInvitations = () => {
     queryKey: [Endpoints.GET_USER_INVITATIONS],
     queryFn: getUserInvitations,
     select: (data) => data.data,
-    ...queryConfig.frequent,
+    ...queryConfig.daily,
     onError: (error) => {
       console.error("Errore durante il recupero degli inviti:", error);
     },

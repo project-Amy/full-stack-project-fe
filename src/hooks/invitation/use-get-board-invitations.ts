@@ -28,7 +28,7 @@ export const useGetBoardInvitations = (boardId: string) => {
     queryKey: [Endpoints.GET_BOARD_INVITATIONS, boardId],
     queryFn: getBoardInvitations,
     select: (data) => data.data,
-    ...queryConfig.frequent,
+    ...queryConfig.daily,
     enabled: !!boardId,
     onError: (error) => {
       console.error("Errore durante il recupero degli inviti della board:", error);

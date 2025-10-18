@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Spin, Empty, Row, Col, Layout, Badge } from "antd";
+import { Button, Card, Empty, Row, Col, Layout, Badge } from "antd";
 import { PlusOutlined, MailOutlined } from "@ant-design/icons";
 import CreateBoardModal from "../components/board/modal/CreateBoardModal";
 import PendingInvitesModal from "../components/invitation/PendingInvitesModal";
@@ -19,21 +19,14 @@ export default function Home() {
 
   const pendingInvitationsCount = invitations?.filter((inv) => inv.status === "PENDING").length || 0;
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen relative">
-        <AuthBackground />
-        <Spin size="large" className="relative z-10" />
-      </div>
-    );
-  }
-
   return (
     <Layout className="!min-h-screen relative" style={{ background: "transparent" }}>
       <AuthBackground />
       <Navbar />
       <CreateBoardModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <PendingInvitesModal open={isPendingInvitesModalOpen} onClose={() => setIsPendingInvitesModalOpen(false)} />
+
+
       <Content className="relative z-10 flex flex-col">
         <div className="max-w-7xl mx-auto p-6 w-full">
           <div className="flex gap-4 mb-4">
@@ -47,12 +40,13 @@ export default function Home() {
             </Badge>
           </div>
         </div>
+
         {data && data?.length > 0 ? (
           <div className="max-w-7xl mx-auto p-6 w-full">
             <Row gutter={[16, 16]}>
               {data.map((board: Board) => (
                 <Col xs={24} sm={12} md={8} lg={6} key={board.id}>
-                  <BoardCard data={board} />
+                  <BoardCard data={board} isLoading={isLoading} />
                 </Col>
               ))}
             </Row>

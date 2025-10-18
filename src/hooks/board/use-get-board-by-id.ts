@@ -28,7 +28,7 @@ export const useGetBoardById = (boardId: string) => {
     queryKey: [Endpoints.GET_BOARD_BY_ID, boardId],
     queryFn: getBoardById,
     select: (data) => data.data,
-    ...queryConfig.frequent,
+    ...queryConfig.daily,
     enabled: !!boardId,
     onError: (error) => {
       console.error("Errore durante il recupero della board:", error);

@@ -26,7 +26,7 @@ export const useGetAllUsers = () => {
     queryKey: [Endpoints.GET_ALL_USERS],
     queryFn: getAllUsers,
     select: (data) => data.data,
-    ...queryConfig.frequent,
+    ...queryConfig.daily,
     onError: (error) => {
       console.error("Errore durante il recupero degli utenti:", error);
     },

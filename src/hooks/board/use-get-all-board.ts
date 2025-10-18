@@ -28,7 +28,7 @@ export const useGetAllBoard = () => {
     queryKey: [Endpoints.GET_ALL_BOARD],
     queryFn: getAllBoards,
     select: (data) => data.data,
-    ...queryConfig.frequent,
+    ...queryConfig.daily,
     onError: (error) => {
       console.error("Errore durante il recupero delle board:", error);
     },
