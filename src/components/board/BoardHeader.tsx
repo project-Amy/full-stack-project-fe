@@ -1,29 +1,31 @@
 import { Button, Typography, Flex, Segmented } from "antd";
 import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
 import { BOARD_VIEW_OPTIONS } from "../../constant/boardViews";
+import { useBoardViewStore } from "../../store/useBoardViewStore";
 import type { BoardViewType } from "../../types/board";
 
 const { Title } = Typography;
 
 interface BoardHeaderProps {
   boardName?: string;
+  boardId: string;
   currentView: BoardViewType;
   isLoading: boolean;
   isFetching: boolean;
   onBack: () => void;
-  onViewChange: (view: BoardViewType) => void;
   onCreateTask: () => void;
 }
 
 export default function BoardHeader({
   boardName,
+  boardId,
   currentView,
   isLoading,
   isFetching,
   onBack,
-  onViewChange,
   onCreateTask,
 }: BoardHeaderProps) {
+  const { setBoardView } = useBoardViewStore();
   return (
     <>
       <Flex className="mb-6">
@@ -32,18 +34,19 @@ export default function BoardHeader({
         </Button>
       </Flex>
 
-      <div className="mb-4 flex justify-between items-center">
+      <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <Title level={4} className="!mb-0">
           {boardName}
         </Title>
-        <div className="flex gap-3 items-center">
+        <div className="flex flex-col xs:flex-row gap-3 items-stretch xs:items-center w-full sm:w-auto">
           <Segmented
             disabled={isLoading || isFetching}
             value={currentView}
-            onChange={(value) => onViewChange(value as BoardViewType)}
+            onChange={(value) => setBoardView(boardId, value as BoardViewType)}
             options={BOARD_VIEW_OPTIONS}
+            className="w-full xs:w-auto"
           />
-          <Button type="primary" icon={<PlusOutlined />} onClick={onCreateTask}>
+          <Button type="primary" icon={<PlusOutlined />} onClick={onCreateTask} className="w-full xs:w-auto">
             New Task
           </Button>
         </div>

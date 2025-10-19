@@ -70,7 +70,7 @@ export default function CreateTaskModal({ open, onClose, boardId, members }: Cre
           </Form.Item>
 
           <Form.Item label="Description" name="description">
-            <Input.TextArea rows={3} placeholder="Enter a description (optional)" />
+            <Input.TextArea autoSize={{ minRows: 2, maxRows: 5 }} placeholder="Enter a description (optional)" />
           </Form.Item>
 
           <Form.Item label="Priority" name="priority" initialValue="MEDIUM">

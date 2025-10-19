@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Layout } from "antd";
 import { useGetBoardById } from "../hooks/board/use-get-board-by-id";
-import AuthBackground from "../components/Background/AuthBackground";
+import { useBoardViewStore } from "../store/useBoardViewStore";
+import AuthBackground from "../components/Background/Background";
 import Navbar from "../components/navigation/Navbar";
 import BoardHeader from "../components/board/BoardHeader";
 import CreateTaskModal from "../components/task/CreateTaskModal";
@@ -19,23 +20,25 @@ export default function BoardDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: board, isLoading, isFetching } = useGetBoardById(id ?? "");
-  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const { boardViews, setBoardView } = useBoardViewStore();
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [currentView, setCurrentView] = useState<BoardViewType>("KANBAN");
 
-  useEffect(() => {
-    if (board?.defaultView) {
-      setCurrentView(board.defaultView as BoardViewType);
+  // Inizializza la vista di default senza re-render
+  const currentView = (() => {
+    if (id && boardViews[id]) {
+      return boardViews[id];
     }
-  }, [board?.defaultView]);
+    if (id && board?.defaultView && !boardViews[id]) {
+      setBoardView(id, board.defaultView as BoardViewType);
+      return board.defaultView as BoardViewType;
+    }
+    return "KANBAN" as BoardViewType;
+  })();
 
   const membersList = board
     ? [
-        {
-          id: board.user_id,
-          email: board.owner.name,
-        },
         ...(board.members
           ?.filter((member) => member.userId !== board.user_id)
           .map((member) => ({
@@ -60,9 +63,15 @@ export default function BoardDetails() {
       case "KANBAN":
         return <KanbanView tasks={board?.tasks || []} onTaskClick={handleTaskClick} isLoading={isLoading} />;
       case "LIST":
-        return <ListView tasks={board?.tasks || []} onTaskClick={handleTaskClick} isLoading={isLoading} />;
+        return (
+          <ListView
+            tasks={board?.tasks || []}
+            onTaskClick={handleTaskClick}
+            isLoading={isLoading}
+          />
+        );
       case "TABLE":
-        return <TableView tasks={board?.tasks || []} onTaskClick={handleTaskClick} isLoading={isLoading} />;
+        return <TableView tasks={board?.tasks || []} isLoading={isLoading} boardId={id || ""} members={membersList} />;
       default:
         return;
     }
@@ -72,7 +81,7 @@ export default function BoardDetails() {
     <Layout className="!min-h-screen relative !bg-trasparent" style={{ background: "transparent" }}>
       <AuthBackground />
       <Navbar />
-      <CreateTaskModal open={isTaskModalOpen} onClose={() => setIsTaskModalOpen(false)} boardId={id || ""} />
+      <CreateTaskModal open={isTaskModalOpen} onClose={() => setIsTaskModalOpen(false)} boardId={id || ""} members={membersList} />
       <EditTaskModal
         open={isEditModalOpen}
         onClose={handleEditModalClose}
@@ -84,11 +93,11 @@ export default function BoardDetails() {
         <div className="max-w-7xl mx-auto">
           <BoardHeader
             boardName={board?.name}
+            boardId={id || ""}
             currentView={currentView}
             isLoading={isLoading}
             isFetching={isFetching}
             onBack={() => navigate("/")}
-            onViewChange={setCurrentView}
             onCreateTask={() => setIsTaskModalOpen(true)}
           />
           {renderViewComponent(currentView)}

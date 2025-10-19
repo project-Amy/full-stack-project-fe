@@ -92,7 +92,7 @@ export default function EditTaskModal({ open, onClose, task, boardId, members }:
           </Form.Item>
 
           <Form.Item label="Description" name="description">
-            <Input.TextArea rows={3} placeholder="Enter a description (optional)" />
+            <Input.TextArea autoSize={{ minRows: 2, maxRows: 5 }} placeholder="Enter a description (optional)" />
           </Form.Item>
 
           <div className="grid grid-cols-2 gap-4">

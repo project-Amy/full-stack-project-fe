@@ -36,7 +36,7 @@ export default function KanbanColumn({ title, tasks, tagColor, onTaskClick }: Ka
                 {task.title}
               </Text>
               {task.description && (
-                <Text type="secondary" className="text-xs line-clamp-2 block">
+                <Text type="secondary" className="text-xs !line-clamp-3 block">
                   {task.description}
                 </Text>
               )}
