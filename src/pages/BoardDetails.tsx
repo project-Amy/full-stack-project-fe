@@ -11,6 +11,7 @@ import BoardHeader from "../components/board/BoardHeader";
 import TaskFilters from "../components/board/TaskFilters";
 import CreateTaskModal from "../components/task/CreateTaskModal";
 import EditTaskModal from "../components/task/EditTaskModal";
+import DeleteModal from "../components/task/DeleteModal";
 import KanbanView from "../components/board/views/KanbanView";
 import ListView from "../components/board/views/ListView";
 import TableView from "../components/board/views/TableView";
@@ -28,6 +29,7 @@ export default function BoardDetails() {
   const { boardViews, setBoardView } = useBoardViewStore();
   const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
 
@@ -65,6 +67,16 @@ export default function BoardDetails() {
     setSelectedTask(null);
   }
 
+  function handleDeleteClick() {
+    setIsEditModalOpen(false);
+    setIsDeleteModalOpen(true);
+  }
+
+  function handleDeleteModalClose() {
+    setIsDeleteModalOpen(false);
+    setSelectedTask(null);
+  }
+
   function renderViewComponent(currentView: BoardViewType) {
     const tasksToUse = currentView === "TABLE" ? tasks : filteredTasks;
 
@@ -96,6 +108,15 @@ export default function BoardDetails() {
         task={selectedTask}
         boardId={id || ""}
         members={membersList}
+        onDelete={handleDeleteClick}
+      />
+      <DeleteModal
+        open={isDeleteModalOpen}
+        onClose={handleDeleteModalClose}
+        isTask={true}
+        itemId={selectedTask?.id || ""}
+        itemTitle={selectedTask?.title || ""}
+        boardId={id || ""}
       />
       <Content className="p-4 w-full max-w-7xl mx-auto">
         <BoardHeader

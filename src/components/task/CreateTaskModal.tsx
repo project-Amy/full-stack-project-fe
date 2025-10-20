@@ -64,6 +64,9 @@ export default function CreateTaskModal({ open, onClose, boardId, members }: Cre
             rules={[
               { required: true, message: "Title is required" },
               { min: 3, message: "Title must be at least 3 characters" },
+              {
+                max: 20, message:"Title must be maximum 20 characters"
+              }
             ]}
           >
             <Input placeholder="Enter task title" />
