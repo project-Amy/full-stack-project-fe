@@ -3,9 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Layout } from "antd";
 import { useGetBoardById } from "../hooks/board/use-get-board-by-id";
 import { useBoardViewStore } from "../store/useBoardViewStore";
+import { useTaskFilters } from "../hooks/use-task-filters";
 import AuthBackground from "../components/Background/Background";
 import Navbar from "../components/navigation/Navbar";
 import BoardHeader from "../components/board/BoardHeader";
+import TaskFilters from "../components/board/TaskFilters";
 import CreateTaskModal from "../components/task/CreateTaskModal";
 import EditTaskModal from "../components/task/EditTaskModal";
 import KanbanView from "../components/board/views/KanbanView";
@@ -25,7 +27,8 @@ export default function BoardDetails() {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-  // Inizializza la vista di default senza re-render
+  const { filters, filteredTasks, updateFilters, clearFilters, hasActiveFilters } = useTaskFilters(board?.tasks || []);
+
   const currentView = (() => {
     if (id && boardViews[id]) {
       return boardViews[id];
@@ -59,19 +62,15 @@ export default function BoardDetails() {
   }
 
   function renderViewComponent(currentView: BoardViewType) {
+    const tasksToUse = currentView === "TABLE" ? board?.tasks || [] : filteredTasks;
+
     switch (currentView) {
       case "KANBAN":
-        return <KanbanView tasks={board?.tasks || []} onTaskClick={handleTaskClick} isLoading={isLoading} />;
+        return <KanbanView tasks={tasksToUse} onTaskClick={handleTaskClick} isLoading={isLoading} />;
       case "LIST":
-        return (
-          <ListView
-            tasks={board?.tasks || []}
-            onTaskClick={handleTaskClick}
-            isLoading={isLoading}
-          />
-        );
+        return <ListView tasks={tasksToUse} onTaskClick={handleTaskClick} isLoading={isLoading} />;
       case "TABLE":
-        return <TableView tasks={board?.tasks || []} isLoading={isLoading} boardId={id || ""} members={membersList} />;
+        return <TableView tasks={tasksToUse} isLoading={isLoading} boardId={id || ""} members={membersList} />;
       default:
         return;
     }
@@ -81,7 +80,12 @@ export default function BoardDetails() {
     <Layout className="!min-h-screen relative !bg-trasparent" style={{ background: "transparent" }}>
       <AuthBackground />
       <Navbar />
-      <CreateTaskModal open={isTaskModalOpen} onClose={() => setIsTaskModalOpen(false)} boardId={id || ""} members={membersList} />
+      <CreateTaskModal
+        open={isTaskModalOpen}
+        onClose={() => setIsTaskModalOpen(false)}
+        boardId={id || ""}
+        members={membersList}
+      />
       <EditTaskModal
         open={isEditModalOpen}
         onClose={handleEditModalClose}
@@ -89,19 +93,27 @@ export default function BoardDetails() {
         boardId={id || ""}
         members={membersList}
       />
-      <Content className="p-4">
-        <div className="max-w-7xl mx-auto">
-          <BoardHeader
-            boardName={board?.name}
-            boardId={id || ""}
-            currentView={currentView}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            onBack={() => navigate("/")}
-            onCreateTask={() => setIsTaskModalOpen(true)}
+      <Content className="p-4 w-full max-w-7xl mx-auto">
+        <BoardHeader
+          boardName={board?.name}
+          boardId={id || ""}
+          currentView={currentView}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          onBack={() => navigate("/")}
+          onCreateTask={() => setIsTaskModalOpen(true)}
+        />
+        {currentView !== "TABLE" && (
+          <TaskFilters
+            filters={filters}
+            onFilterChange={updateFilters}
+            onClearFilters={clearFilters}
+            hasActiveFilters={hasActiveFilters}
+            members={membersList}
           />
-          {renderViewComponent(currentView)}
-        </div>
+        )}
+
+        {renderViewComponent(currentView)}
       </Content>
     </Layout>
   );

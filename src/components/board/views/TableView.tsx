@@ -15,10 +15,7 @@ interface TableViewProps {
 }
 
 export default function TableView({ tasks, isLoading, boardId, members }: TableViewProps) {
-  // Estrai assignee unici per i filtri
-  const uniqueAssignees = Array.from(
-    new Set(tasks.filter((task) => task.assignee).map((task) => task.assignee!.name))
-  );
+  const uniqueAssignees = Array.from(new Set(tasks.filter((task) => task.assignee).map((task) => task.assignee!.name)));
 
   const columns: ColumnsType<Task> = [
     {
@@ -95,17 +92,19 @@ export default function TableView({ tasks, isLoading, boardId, members }: TableV
   ];
 
   return (
-    <Table
-      loading={isLoading}
-      columns={columns}
-      dataSource={tasks}
-      rowKey="id"
-      scroll={{ x: 800 }}
-      pagination={{
-        pageSize: 10,
-        showSizeChanger: true,
-        showTotal: (total) => `Total ${total} tasks`,
-      }}
-    />
+    <div className="mt-4 overflow-x-auto">
+      <Table
+        loading={isLoading}
+        columns={columns}
+        dataSource={tasks}
+        rowKey="id"
+        scroll={{ x: 1200 }}
+        pagination={{
+          pageSize: 10,
+          showSizeChanger: true,
+          showTotal: (total) => `Total ${total} tasks`,
+        }}
+      />
+    </div>
   );
 }

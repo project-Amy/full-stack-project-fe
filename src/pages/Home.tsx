@@ -29,11 +29,24 @@ export default function Home() {
       <Content className="relative z-10 flex flex-col">
         <div className="max-w-7xl mx-auto p-6 w-full">
           <div className="flex flex-col sm:flex-row gap-4 mb-4">
-            <Button type="primary" icon={<PlusOutlined />} size="large" onClick={() => setIsModalOpen(true)} className="w-full sm:w-auto">
+            <Button
+              disabled={isLoading}
+              type="primary"
+              icon={<PlusOutlined />}
+              size="large"
+              onClick={() => setIsModalOpen(true)}
+              className="w-full sm:w-auto"
+            >
               Create new board
             </Button>
             <Badge count={pendingInvitationsCount} offset={[-5, 5]} className="w-full sm:w-auto">
-              <Button icon={<MailOutlined />} size="large" onClick={() => setIsPendingInvitesModalOpen(true)} className="w-full">
+              <Button
+                disabled={isLoading}
+                icon={<MailOutlined />}
+                size="large"
+                onClick={() => setIsPendingInvitesModalOpen(true)}
+                className="w-full"
+              >
                 Pending Invites
               </Button>
             </Badge>

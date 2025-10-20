@@ -15,53 +15,57 @@ export default function KanbanView({ tasks, onTaskClick, isLoading }: KanbanView
     DONE: tasks?.filter((task) => task.status === "DONE") || [],
   };
 
-  return isLoading ? (
-    <Row gutter={[16, 16]}>
-      {["TODO", "IN PROGRESS", "DONE"].map((col) => (
-        <Col xs={24} md={8} key={col}>
-          <Card title={<Skeleton.Input active size="small" />} className="h-full">
-            <Space direction="vertical" size="middle" className="w-full">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <Card key={item} size="small" className="shadow-sm">
-                  <Skeleton active title={{ width: "60%" }} paragraph={{ rows: 2 }} />
-                </Card>
-              ))}
-            </Space>
-          </Card>
-        </Col>
-      ))}
-    </Row>
-  ) : (
-    <Row gutter={[16, 16]}>
-      <Col xs={24} md={8}>
-        <KanbanColumn
-          title="TODO"
-          status="TODO"
-          tasks={tasksByStatus.TODO}
-          tagColor="default"
-          onTaskClick={onTaskClick}
-        />
-      </Col>
+  return (
+    <div className="max-w-7xl mx-auto">
+      {isLoading ? (
+        <Row gutter={[16, 16]} className="mt-4">
+          {["TODO", "IN PROGRESS", "DONE"].map((col) => (
+            <Col xs={24} md={8} key={col}>
+              <Card title={<Skeleton.Input active size="small" />} className="h-full">
+                <Space direction="vertical" size="middle" className="w-full">
+                  {[1, 2, 3, 4].map((item) => (
+                    <Card key={item} size="small" className="shadow-sm">
+                      <Skeleton active title={{ width: "60%" }} paragraph={{ rows: 2 }} />
+                    </Card>
+                  ))}
+                </Space>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      ) : (
+        <Row gutter={[16, 16]} className="mt-4">
+          <Col xs={24} md={8}>
+            <KanbanColumn
+              title="TODO"
+              status="TODO"
+              tasks={tasksByStatus.TODO}
+              tagColor="default"
+              onTaskClick={onTaskClick}
+            />
+          </Col>
 
-      <Col xs={24} md={8}>
-        <KanbanColumn
-          title="IN PROGRESS"
-          status="IN_PROGRESS"
-          tasks={tasksByStatus.IN_PROGRESS}
-          tagColor="processing"
-          onTaskClick={onTaskClick}
-        />
-      </Col>
+          <Col xs={24} md={8}>
+            <KanbanColumn
+              title="IN PROGRESS"
+              status="IN_PROGRESS"
+              tasks={tasksByStatus.IN_PROGRESS}
+              tagColor="processing"
+              onTaskClick={onTaskClick}
+            />
+          </Col>
 
-      <Col xs={24} md={8}>
-        <KanbanColumn
-          title="DONE"
-          status="DONE"
-          tasks={tasksByStatus.DONE}
-          tagColor="success"
-          onTaskClick={onTaskClick}
-        />
-      </Col>
-    </Row>
+          <Col xs={24} md={8}>
+            <KanbanColumn
+              title="DONE"
+              status="DONE"
+              tasks={tasksByStatus.DONE}
+              tagColor="success"
+              onTaskClick={onTaskClick}
+            />
+          </Col>
+        </Row>
+      )}
+    </div>
   );
 }

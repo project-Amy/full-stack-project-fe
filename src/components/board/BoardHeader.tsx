@@ -46,7 +46,13 @@ export default function BoardHeader({
             options={BOARD_VIEW_OPTIONS}
             className="w-full xs:w-auto"
           />
-          <Button type="primary" icon={<PlusOutlined />} onClick={onCreateTask} className="w-full xs:w-auto">
+          <Button
+            disabled={isLoading || isFetching}
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={onCreateTask}
+            className="w-full xs:w-auto"
+          >
             New Task
           </Button>
         </div>
