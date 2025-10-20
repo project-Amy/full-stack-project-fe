@@ -21,3 +21,14 @@ export interface RespondToInvitationData {
   invitationId: string;
   response: "ACCEPTED" | "REJECTED";
 }
+
+export interface ResponeInvitationUser {
+  id: string;
+  board: {
+    id: string;
+    name: string;
+    ownerName: string;
+  };
+  status: InvitationStatus;
+  userId: string;
+}

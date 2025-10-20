@@ -27,7 +27,7 @@ export const useUpdateTask = () => {
   return useMutation({
     mutationFn: updateTask,
     onSuccess: (_, variables) => {
-      invalidateQuery([EndpointsKey.GET_BOARD_BY_ID, variables.boardId]);
+      invalidateQuery([EndpointsKey.GET_BOARD_TASKS, variables.boardId]);
     },
     onError: (error) => {
       console.error("Error updating task:", error);

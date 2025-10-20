@@ -2,16 +2,16 @@ import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { useQuery, queryConfig } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
 import { useAuthStore } from "../../store/useAuthStore";
-import type { Invitation } from "../../types";
+import type { ResponeInvitationUser } from "../../types/invitation";
 import useAuthenticatedFetch from "../useAuthenticatedFetch";
 
 interface GetUserInvitationsResponse {
   success: boolean;
   message: string;
-  data: Invitation[];
+  data: ResponeInvitationUser[];
 }
 
-export const useGetUserInvitations = () => {
+export const useGetPendingInvitations = () => {
   const { authenticatedFetch } = useAuthenticatedFetch();
   const { userId } = useAuthStore();
 

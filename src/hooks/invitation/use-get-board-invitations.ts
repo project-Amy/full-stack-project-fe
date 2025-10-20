@@ -25,7 +25,7 @@ export const useGetBoardInvitations = (boardId: string) => {
   }
 
   return useQuery({
-    queryKey: [EndpointsKey.GET_BOARD_BY_ID, boardId],
+    queryKey: [EndpointsKey.GET_BOARD_INVITATIONS, boardId],
     queryFn: getBoardInvitations,
     select: (data) => data.data,
     ...queryConfig.daily,
