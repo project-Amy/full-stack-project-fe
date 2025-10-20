@@ -1,9 +1,10 @@
 import { message } from "antd";
-import { Endpoints } from "../../api/endpoints";
+import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { invalidateQuery, useMutation } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
 import type { InviteUserData } from "../../types";
 import useAuthenticatedFetch from "../useAuthenticatedFetch";
+
 
 export const useInviteUser = () => {
   const { authenticatedFetch } = useAuthenticatedFetch();
@@ -23,13 +24,12 @@ export const useInviteUser = () => {
 
   return useMutation({
     mutationFn: inviteUser,
-    onSuccess: () => {
-      invalidateQuery([Endpoints.GET_BOARD_BY_ID]);
-      invalidateQuery([Endpoints.GET_BOARD_INVITATIONS]);
+    onSuccess: (_, variables) => {
+      invalidateQuery([EndpointsKey.GET_BOARD_BY_ID, variables.boardId]);
+      invalidateQuery([EndpointsKey.GET_BOARD_INVITATIONS]);
       message.success("User invited successfully!");
     },
     onError: (error) => {
-      console.error("Errore durante l'invito dell'utente:", error);
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       message.error(errorMessage);
     },

@@ -10,3 +10,12 @@ export const Endpoints = {
   CREATE_TASK: "api/tasks", // post
   UPDATE_TASK: "api/tasks/:id", // patch
 } as const
+
+
+export const EndpointsKey = {
+  GET_ALL_BOARD: "GET_ALL_BOARD",
+  GET_BOARD_BY_ID: "GET_BOARD_BY_ID",
+  GET_USER_INVITATIONS: "GET_USER_INVITATIONS",
+  GET_BOARD_INVITATIONS: "GET_BOARD_INVITATIONS",
+  GET_ALL_USERS: "GET_ALL_USERS"
+}

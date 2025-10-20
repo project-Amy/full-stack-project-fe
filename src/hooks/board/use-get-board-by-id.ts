@@ -1,4 +1,4 @@
-import { Endpoints } from "../../api/endpoints";
+import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { useQuery, queryConfig } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
 import type { BoardWithDetails } from "../../types";
@@ -25,7 +25,7 @@ export const useGetBoardById = (boardId: string) => {
   }
 
   return useQuery({
-    queryKey: [Endpoints.GET_BOARD_BY_ID, boardId],
+    queryKey: [EndpointsKey.GET_BOARD_BY_ID, boardId],
     queryFn: getBoardById,
     select: (data) => data.data,
     ...queryConfig.daily,

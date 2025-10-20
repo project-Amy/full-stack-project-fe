@@ -1,12 +1,14 @@
 import { message } from "antd";
-import { Endpoints } from "../../api/endpoints";
+import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { invalidateQuery, useMutation } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
 import type { RespondToInvitationData } from "../../types";
 import useAuthenticatedFetch from "../useAuthenticatedFetch";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export const useRespondToInvitation = () => {
   const { authenticatedFetch } = useAuthenticatedFetch();
+  const { userId } = useAuthStore();
 
   async function respondToInvitation(data: RespondToInvitationData): Promise<RespondToInvitationData> {
     const endpoint = Endpoints.RESPOND_TO_INVITATION.replace(":id", data.invitationId);
@@ -27,8 +29,8 @@ export const useRespondToInvitation = () => {
   return useMutation({
     mutationFn: respondToInvitation,
     onSuccess: (data) => {
-      invalidateQuery([Endpoints.GET_USER_INVITATIONS]);
-      invalidateQuery([Endpoints.GET_ALL_BOARD]);
+      invalidateQuery([EndpointsKey.GET_USER_INVITATIONS, userId]);
+      invalidateQuery([EndpointsKey.GET_ALL_BOARD]);
       if (data.response === "ACCEPTED") {
         message.success("Invitation accepted!");
       } else {

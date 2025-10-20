@@ -1,6 +1,7 @@
-import { Endpoints } from "../../api/endpoints";
+import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { useQuery, queryConfig } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
+import { useAuthStore } from "../../store/useAuthStore";
 import type { Invitation } from "../../types";
 import useAuthenticatedFetch from "../useAuthenticatedFetch";
 
@@ -12,6 +13,7 @@ interface GetUserInvitationsResponse {
 
 export const useGetUserInvitations = () => {
   const { authenticatedFetch } = useAuthenticatedFetch();
+  const { userId } = useAuthStore();
 
   async function getUserInvitations(): Promise<GetUserInvitationsResponse> {
     const response = await authenticatedFetch(`${BASE_URL}/${Endpoints.GET_USER_INVITATIONS}`);
@@ -23,7 +25,7 @@ export const useGetUserInvitations = () => {
   }
 
   return useQuery({
-    queryKey: [Endpoints.GET_USER_INVITATIONS],
+    queryKey: [EndpointsKey.GET_USER_INVITATIONS, userId],
     queryFn: getUserInvitations,
     select: (data) => data.data,
     ...queryConfig.daily,

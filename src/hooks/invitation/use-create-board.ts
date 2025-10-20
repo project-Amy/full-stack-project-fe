@@ -1,4 +1,4 @@
-import { Endpoints } from "../../api/endpoints";
+import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { invalidateQuery, useMutation } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
 import type { CreateBoardForm } from "../../types/board";
@@ -20,7 +20,7 @@ export const useCreateBoard = () => {
   return useMutation({
     mutationFn: createBoard,
     onSuccess: () => {
-      invalidateQuery([Endpoints.GET_ALL_BOARD]);
+      invalidateQuery([EndpointsKey.GET_ALL_BOARD]);
     },
     onError: (error) => {
       console.error("Errore durante la creazione della board:", error);

@@ -1,4 +1,4 @@
-import { Endpoints } from "../../api/endpoints";
+import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { invalidateQuery, useMutation } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
 import type { UpdateTaskDTO } from "../../types/task";
@@ -27,7 +27,7 @@ export const useUpdateTask = () => {
   return useMutation({
     mutationFn: updateTask,
     onSuccess: (_, variables) => {
-      invalidateQuery([Endpoints.GET_BOARD_BY_ID, variables.boardId]);
+      invalidateQuery([EndpointsKey.GET_BOARD_BY_ID, variables.boardId]);
     },
     onError: (error) => {
       console.error("Error updating task:", error);

@@ -1,4 +1,4 @@
-import { Endpoints } from "../api/endpoints";
+import { Endpoints, EndpointsKey } from "../api/endpoints";
 import { useQuery, queryConfig } from "../api/query";
 import { BASE_URL } from "../constant/data";
 import type { User } from "../types";
@@ -23,7 +23,7 @@ export const useGetAllUsers = () => {
   }
 
   return useQuery({
-    queryKey: [Endpoints.GET_ALL_USERS],
+    queryKey: [EndpointsKey.GET_ALL_USERS],
     queryFn: getAllUsers,
     select: (data) => data.data,
     ...queryConfig.daily,

@@ -1,4 +1,4 @@
-import { Endpoints } from "../../api/endpoints";
+import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { invalidateQuery, useMutation } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
 import type { CreateTaskDTO } from "../../types/task";
@@ -20,8 +20,8 @@ export const useCreateTask = () => {
   return useMutation({
     mutationFn: createTask,
     onSuccess: (_, variables) => {
-      invalidateQuery([Endpoints.GET_BOARD_BY_ID, variables.boardId]);
-      invalidateQuery([Endpoints.GET_ALL_BOARD]);
+      invalidateQuery([EndpointsKey.GET_BOARD_BY_ID, variables.boardId]);
+      invalidateQuery([EndpointsKey.GET_ALL_BOARD]);
     },
     onError: (error) => {
       console.error("Error creating task:", error);

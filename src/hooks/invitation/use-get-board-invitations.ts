@@ -1,4 +1,4 @@
-import { Endpoints } from "../../api/endpoints";
+import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { useQuery, queryConfig } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
 import type { Invitation } from "../../types/invitation";
@@ -25,7 +25,7 @@ export const useGetBoardInvitations = (boardId: string) => {
   }
 
   return useQuery({
-    queryKey: [Endpoints.GET_BOARD_INVITATIONS, boardId],
+    queryKey: [EndpointsKey.GET_BOARD_BY_ID, boardId],
     queryFn: getBoardInvitations,
     select: (data) => data.data,
     ...queryConfig.daily,
