@@ -33,9 +33,9 @@ export default function ModalInviteUsers({ setOpenModal, openModal, id }: ModalI
     setSelectedUserIds([]);
   }
 
-  const currentMemberIds = new Set(board?.members?.map((member) => member.user.id) || []);
+  const currentMemberIds = new Set(board?.members?.map((member) => member.id) || []);
   const pendingInvitationUserIds = new Set(
-    invitations?.filter((inv) => inv.status === "PENDING").map((inv) => inv.userId) || [],
+    (invitations || []).filter((inv) => inv.status === "PENDING").map((inv) => inv.userId),
   );
   const availableUsers = users?.filter((user) => !currentMemberIds.has(user.id)) || [];
 
@@ -75,11 +75,10 @@ export default function ModalInviteUsers({ setOpenModal, openModal, id }: ModalI
                   <List.Item.Meta
                     avatar={
                       <Avatar>
-                        {member.user.name?.charAt(0).toUpperCase() || member.user.email.charAt(0).toUpperCase()}
+                        {member.name?.charAt(0).toUpperCase()}
                       </Avatar>
                     }
-                    title={member.user.name || "Unknown"}
-                    description={member.user.email}
+                    title={member.name || "Unknown"}
                   />
                 </List.Item>
               )}

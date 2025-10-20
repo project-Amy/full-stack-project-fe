@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Layout } from "antd";
 import { useGetBoardById } from "../hooks/board/use-get-board-by-id";
+import { useGetBoardTasks } from "../hooks/board/use-get-board-tasks";
 import { useBoardViewStore } from "../store/useBoardViewStore";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import AuthBackground from "../components/Background/Background";
@@ -15,19 +16,26 @@ import ListView from "../components/board/views/ListView";
 import TableView from "../components/board/views/TableView";
 import type { Task } from "../types";
 import type { BoardViewType } from "../types/board";
+import TaskFiltersSkeleton from "../components/board/TaskFiltersSkeleton";
 
 const { Content } = Layout;
 
 export default function BoardDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data: board, isLoading, isFetching } = useGetBoardById(id ?? "");
+  const { data: board, isLoading: isBoardLoading } = useGetBoardById(id ?? "");
+  const { data: boardTasks, isLoading: isTasksLoading, isFetching } = useGetBoardTasks(id ?? "");
   const { boardViews, setBoardView } = useBoardViewStore();
   const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-  const { filters, filteredTasks, updateFilters, clearFilters, hasActiveFilters } = useTaskFilters(board?.tasks || []);
+
+
+  const isLoading = isBoardLoading || isTasksLoading;
+  const tasks = boardTasks?.tasks || [];
+
+  const { filters, filteredTasks, updateFilters, clearFilters, hasActiveFilters } = useTaskFilters(tasks);
 
   const currentView = (() => {
     if (id && boardViews[id]) {
@@ -41,14 +49,10 @@ export default function BoardDetails() {
   })();
 
   const membersList = board
-    ? [
-        ...(board.members
-          ?.filter((member) => member.userId !== board.user_id)
-          .map((member) => ({
-            id: member.userId,
-            email: member.user.name || member.user.email,
-          })) || []),
-      ]
+    ? board.members.map((member) => ({
+        id: member.id,
+        email: member.name,
+      }))
     : [];
 
   function handleTaskClick(task: Task) {
@@ -62,7 +66,7 @@ export default function BoardDetails() {
   }
 
   function renderViewComponent(currentView: BoardViewType) {
-    const tasksToUse = currentView === "TABLE" ? board?.tasks || [] : filteredTasks;
+    const tasksToUse = currentView === "TABLE" ? tasks : filteredTasks;
 
     switch (currentView) {
       case "KANBAN":
@@ -103,15 +107,18 @@ export default function BoardDetails() {
           onBack={() => navigate("/")}
           onCreateTask={() => setIsTaskModalOpen(true)}
         />
-        {currentView !== "TABLE" && (
-          <TaskFilters
-            filters={filters}
-            onFilterChange={updateFilters}
-            onClearFilters={clearFilters}
-            hasActiveFilters={hasActiveFilters}
-            members={membersList}
-          />
-        )}
+        {currentView !== "TABLE" &&
+          (isLoading ? (
+            <TaskFiltersSkeleton />
+          ) : (
+            <TaskFilters
+              filters={filters}
+              onFilterChange={updateFilters}
+              onClearFilters={clearFilters}
+              hasActiveFilters={hasActiveFilters}
+              members={membersList}
+            />
+          ))}
 
         {renderViewComponent(currentView)}
       </Content>

@@ -20,7 +20,7 @@ export const useCreateTask = () => {
   return useMutation({
     mutationFn: createTask,
     onSuccess: (_, variables) => {
-      invalidateQuery([EndpointsKey.GET_BOARD_BY_ID, variables.boardId]);
+      invalidateQuery([EndpointsKey.GET_BOARD_TASKS, variables.boardId]);
       invalidateQuery([EndpointsKey.GET_ALL_BOARD]);
     },
     onError: (error) => {

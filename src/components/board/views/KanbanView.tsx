@@ -23,7 +23,7 @@ export default function KanbanView({ tasks, onTaskClick, isLoading }: KanbanView
             <Col xs={24} md={8} key={col}>
               <Card title={<Skeleton.Input active size="small" />} className="h-full">
                 <Space direction="vertical" size="middle" className="w-full">
-                  {[1, 2, 3, 4].map((item) => (
+                  {[1, 2, 3].map((item) => (
                     <Card key={item} size="small" className="shadow-sm">
                       <Skeleton active title={{ width: "60%" }} paragraph={{ rows: 2 }} />
                     </Card>

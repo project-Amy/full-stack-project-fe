@@ -1,6 +1,6 @@
-import { Modal, List, Button, Spin, Tag, Empty } from "antd";
+import { Modal, List, Button, Spin, Tag, Empty, Flex } from "antd";
 import { MailOutlined } from "@ant-design/icons";
-import { useGetUserInvitations } from "../../hooks/invitation/use-get-pending-invitations";
+import { useGetPendingInvitations } from "../../hooks/invitation/use-get-pending-invitations";
 import { useRespondToInvitation } from "../../hooks/invitation/use-respond-to-invitation";
 
 interface PendingInvitesModalProps {
@@ -9,7 +9,7 @@ interface PendingInvitesModalProps {
 }
 
 export default function PendingInvitesModal({ open, onClose }: PendingInvitesModalProps) {
-  const { data: invitations, isLoading } = useGetUserInvitations();
+  const { data: invitations, isLoading } = useGetPendingInvitations();
   const { mutate: respondToInvitation, isPending: isRespondingToInvitation } = useRespondToInvitation();
 
   const pendingInvitations = invitations?.filter((inv) => inv.status === "PENDING");
@@ -64,23 +64,14 @@ export default function PendingInvitesModal({ open, onClose }: PendingInvitesMod
               <List.Item.Meta
                 title={<span className="font-semibold text-lg">{invitation.board.name}</span>}
                 description={
-                  <div className="flex flex-col gap-2 mt-1">
-                    <span className="text-sm text-gray-600">
-                      Invited by: <span className="font-medium">{invitation.board.owner.name}</span>
-                    </span>
-                    <span className="text-xs text-gray-400">
-                      {new Date(invitation.invitedAt).toLocaleDateString("en-US", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
+                  <Flex gap={5} className="mt-1">
                     <Tag color="orange" className="w-fit">
                       {invitation.status}
                     </Tag>
-                  </div>
+                    <span className="text-sm text-gray-600">
+                      Invited by: <span className="font-medium">{invitation.board.ownerName}</span>
+                    </span>
+                  </Flex>
                 }
               />
             </List.Item>
