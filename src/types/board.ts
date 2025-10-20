@@ -1,5 +1,6 @@
 import type { Owner } from "./user";
 import type { BoardMember } from "./member";
+import type { Task } from "./task";
 
 export interface Board {
   id: string;
@@ -12,6 +13,8 @@ export interface Board {
 export interface BoardWithDetails extends Board {
   owner: Owner;
   members?: BoardMember[];
+  tasks?: Task[];
+  defaultView: BoardViewType;
 }
 
 export type BoardViewType = "LIST" | "TABLE" | "KANBAN";

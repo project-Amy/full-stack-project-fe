@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import BoardDetails from "./pages/BoardDetails";
 import type { Navigation } from "./types/navigation";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -12,6 +13,14 @@ export default function App() {
       element: (
         <AuthMiddleware>
           <Home />
+        </AuthMiddleware>
+      ),
+    },
+    {
+      path: "/details/:id",
+      element: (
+        <AuthMiddleware>
+          <BoardDetails />
         </AuthMiddleware>
       ),
     },

@@ -1,4 +1,4 @@
-import { Endpoints } from "../../api/endpoints";
+import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { useQuery, queryConfig } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
 import type { Board } from "../../types/board";
@@ -25,10 +25,10 @@ export const useGetAllBoard = () => {
   }
 
   return useQuery({
-    queryKey: [Endpoints.GET_ALL_BOARD],
+    queryKey: [EndpointsKey.GET_ALL_BOARD],
     queryFn: getAllBoards,
     select: (data) => data.data,
-    ...queryConfig.frequent,
+    ...queryConfig.daily,
     onError: (error) => {
       console.error("Errore durante il recupero delle board:", error);
     },

@@ -1,29 +1,30 @@
 import { Endpoints, EndpointsKey } from "../../api/endpoints";
 import { invalidateQuery, useMutation } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
-import type { CreateBoardForm } from "../../types/board";
+import type { CreateTaskDTO } from "../../types/task";
 import useAuthenticatedFetch from "../useAuthenticatedFetch";
 
-export const useCreateBoard = () => {
+export const useCreateTask = () => {
   const { authenticatedFetch } = useAuthenticatedFetch();
 
-  async function createBoard(data: CreateBoardForm): Promise<void> {
-    const response = await authenticatedFetch(`${BASE_URL}/${Endpoints.CREATE_BOARD}`, {
+  async function createTask(data: CreateTaskDTO): Promise<void> {
+    const response = await authenticatedFetch(`${BASE_URL}/${Endpoints.CREATE_TASK}`, {
       method: "POST",
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      throw new Error("Errore nella creazione della board");
+      throw new Error("Error creating task");
     }
   }
 
   return useMutation({
-    mutationFn: createBoard,
-    onSuccess: () => {
+    mutationFn: createTask,
+    onSuccess: (_, variables) => {
+      invalidateQuery([EndpointsKey.GET_BOARD_BY_ID, variables.boardId]);
       invalidateQuery([EndpointsKey.GET_ALL_BOARD]);
     },
     onError: (error) => {
-      console.error("Errore durante la creazione della board:", error);
+      console.error("Error creating task:", error);
     },
   });
 };
