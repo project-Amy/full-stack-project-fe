@@ -1,5 +1,4 @@
 import { Button } from "antd";
-
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import { LogoutOutlined } from "@ant-design/icons";

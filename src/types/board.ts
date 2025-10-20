@@ -5,10 +5,8 @@ import type { Task, TaskStatus, TaskPriority } from "./task";
 export interface Board {
   id: string;
   name: string;
-  description: string | null;
-  created_at: string;
-  updated_at: string;
-  user_id: string;
+  ownerId: string;
+  description?: string;
 }
 export interface BoardWithDetails extends Board {
   owner: Owner;

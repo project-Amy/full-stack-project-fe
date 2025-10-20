@@ -74,7 +74,7 @@ export default function Home() {
         {!isLoading && data && data.length === 0 && (
           <div className="flex-1 flex flex-col justify-center p-6 max-w-3xl mx-auto">
             <Card>
-              <Empty description="Nessuna board trovata. Creane una per iniziare!" />
+              <Empty description="No boards yet. Create one to get started!" />
             </Card>
           </div>
         )}

@@ -1,4 +1,5 @@
-import { Modal, Form, Input, message, Select, DatePicker } from "antd";
+import { Modal, Form, Input, message, Select, DatePicker, Button } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
 import dayjs from "dayjs";
 import { useUpdateTask } from "../../hooks/task/use-update-task";
@@ -10,6 +11,7 @@ interface EditTaskModalProps {
   task: Task | null;
   boardId: string;
   members?: Array<{ id: string; email: string }>;
+  onDelete?: () => void;
 }
 
 interface EditTaskForm {
@@ -21,7 +23,7 @@ interface EditTaskForm {
   assigneeId?: string;
 }
 
-export default function EditTaskModal({ open, onClose, task, boardId, members }: EditTaskModalProps) {
+export default function EditTaskModal({ open, onClose, task, boardId, members, onDelete }: EditTaskModalProps) {
   const [form] = Form.useForm<EditTaskForm>();
   const { mutateAsync: updateTask, isPending } = useUpdateTask();
 
@@ -58,14 +60,14 @@ export default function EditTaskModal({ open, onClose, task, boardId, members }:
     if (task && open) {
       form.setFieldsValue({
         title: task.title,
-        description: task.description || undefined,
+        description: task.description ?? undefined,
         status: task.status,
         priority: task.priority,
         dueDate: task.dueDate ? dayjs(task.dueDate) : undefined,
-        assigneeId: task.assigneeId || undefined,
+        assigneeId: task.assignee?.id ?? undefined,
       });
     }
-  }, [task, open, form, members]);
+  }, [task, open, form]);
 
   return (
     open && (
@@ -73,11 +75,22 @@ export default function EditTaskModal({ open, onClose, task, boardId, members }:
         title="Edit Task"
         open={open}
         onCancel={handleCancel}
-        onOk={() => form.submit()}
         confirmLoading={isPending}
-        okText="Save"
-        cancelText="Cancel"
         width={600}
+        destroyOnHidden
+        footer={[
+          onDelete && (
+            <Button key="delete" danger icon={<DeleteOutlined />} onClick={onDelete} className="mr-auto">
+              Delete
+            </Button>
+          ),
+          <Button key="cancel" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button key="save" type="primary" loading={isPending} onClick={() => form.submit()}>
+            Save
+          </Button>,
+        ]}
       >
         <Form form={form} layout="vertical" onFinish={handleFinish}>
           <Form.Item
@@ -85,7 +98,11 @@ export default function EditTaskModal({ open, onClose, task, boardId, members }:
             name="title"
             rules={[
               { required: true, message: "Title is required" },
-              { min: 3, max: 20, message: "Title must be at least 3 characters" },
+              { min: 3, message: "Title must be at least 3 characters" },
+              {
+                max: 20,
+                message: "Title must be maximum 20 characters",
+              },
             ]}
           >
             <Input placeholder="Enter task title" />
