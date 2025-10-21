@@ -25,14 +25,12 @@ export default function BoardDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: board, isLoading: isBoardLoading } = useGetBoardById(id ?? "");
-  const { data: boardTasks, isLoading: isTasksLoading, isFetching } = useGetBoardTasks(id ?? "");
+  const { data: boardTasks, isLoading: isTasksLoading } = useGetBoardTasks(id ?? "");
   const { boardViews, setBoardView } = useBoardViewStore();
   const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-
-
 
   const isLoading = isBoardLoading || isTasksLoading;
   const tasks = boardTasks?.tasks || [];
@@ -123,8 +121,8 @@ export default function BoardDetails() {
           boardName={board?.name}
           boardId={id || ""}
           currentView={currentView}
-          isLoading={isLoading}
-          isFetching={isFetching}
+          isLoading={isBoardLoading}
+          // isFetching={isFetching}
           onBack={() => navigate("/")}
           onCreateTask={() => setIsTaskModalOpen(true)}
         />
