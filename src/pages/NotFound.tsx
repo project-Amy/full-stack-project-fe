@@ -1,6 +1,6 @@
 import { Layout, Card, Typography, Space, Button } from "antd";
 import { useNavigate } from "react-router-dom";
-import Background from "../components/Background/Background";
+import Background from "../components/background/Background";
 import { HomeOutlined } from "@ant-design/icons";
 
 const { Content } = Layout;

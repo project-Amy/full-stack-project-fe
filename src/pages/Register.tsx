@@ -6,7 +6,9 @@ import { supabase } from "../lib/supabaseClient";
 import type { AuthError } from "@supabase/supabase-js";
 import { useAuthStore } from "../store/useAuthStore";
 import type { RegisterFormValues } from "../types/auth";
-import Background from "../components/Background/Background";
+import Background from "../components/background/Background";
+import { invalidateQuery } from "../api/query";
+import { EndpointsKey } from "../api/endpoints";
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;
@@ -30,6 +32,7 @@ export default function Register() {
       if (data.user) {
         setUser(values.email, data.user.id);
       }
+      invalidateQuery([EndpointsKey.GET_ALL_USERS]);
       message.success("Registration successful!");
       navigate("/");
     } catch (error) {
