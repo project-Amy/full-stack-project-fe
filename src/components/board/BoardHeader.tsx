@@ -11,7 +11,6 @@ interface BoardHeaderProps {
   boardId: string;
   currentView: BoardViewType;
   isLoading: boolean;
-  isFetching: boolean;
   onBack: () => void;
   onCreateTask: () => void;
 }
@@ -21,7 +20,6 @@ export default function BoardHeader({
   boardId,
   currentView,
   isLoading,
-  isFetching,
   onBack,
   onCreateTask,
 }: BoardHeaderProps) {
@@ -35,7 +33,7 @@ export default function BoardHeader({
       </Flex>
 
       <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        {isLoading || isFetching ? (
+        {isLoading ? (
           <Skeleton.Input active size="default" style={{ width: 200, height: 24 }} />
         ) : (
           <Title level={4} className="!mb-0">
@@ -44,14 +42,14 @@ export default function BoardHeader({
         )}
         <div className="flex flex-col xs:flex-row gap-3 items-stretch xs:items-center w-full sm:w-auto">
           <Segmented
-            disabled={isLoading || isFetching}
+            disabled={isLoading}
             value={currentView}
             onChange={(value) => setBoardView(boardId, value as BoardViewType)}
             options={BOARD_VIEW_OPTIONS}
             className="w-full xs:w-auto"
           />
           <Button
-            disabled={isLoading || isFetching}
+            disabled={isLoading}
             type="primary"
             icon={<PlusOutlined />}
             onClick={onCreateTask}
