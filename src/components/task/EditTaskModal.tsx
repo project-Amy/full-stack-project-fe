@@ -23,7 +23,7 @@ interface EditTaskForm {
   assigneeId?: string;
 }
 
-export default function EditTaskModal({ open, onClose, task, boardId, members, onDelete }: EditTaskModalProps) {
+export default function EditTaskModal({ open, onClose, task, members, onDelete }: EditTaskModalProps) {
   const [form] = Form.useForm<EditTaskForm>();
   const { mutateAsync: updateTask, isPending } = useUpdateTask();
 
@@ -40,7 +40,6 @@ export default function EditTaskModal({ open, onClose, task, boardId, members, o
       };
       await updateTask({
         taskId: task.id,
-        boardId,
         data: taskData,
       });
       message.success("Task updated successfully!");
