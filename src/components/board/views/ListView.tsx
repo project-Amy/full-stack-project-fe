@@ -1,7 +1,6 @@
 import { Empty } from "antd";
 import type { Task } from "../../../types";
 import TaskCard from "../../task/TaskCard";
-
 interface ListViewProps {
   tasks: Task[];
   onTaskClick: (task: Task) => void;

@@ -2,6 +2,7 @@ import { Card, Tag, Typography, Space, Flex, Avatar, Tooltip } from "antd";
 import { CalendarOutlined, UserOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import type { Task } from "../../types";
 import { getPriorityColor, getStatusColor } from "../../utils/function";
+import QuickEditTask from "./QuickEditTask";
 
 const { Text, Title } = Typography;
 
@@ -27,9 +28,14 @@ export default function TaskCard({ task, onClick, isLoading }: TaskCardProps) {
           <Title level={5} className="!mb-0 flex-1 min-w-0" ellipsis={{ rows: 2 }}>
             {task.title}
           </Title>
-          <Tag color={getStatusColor(task.status)} className="!m-0 font-medium px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm shrink-0">
-            {task.status}
-          </Tag>
+          <Flex gap={8} align="center">
+            <Tag
+              color={getStatusColor(task.status)}
+              className="!m-0 font-medium px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm shrink-0"
+            >
+              {task.status}
+            </Tag>
+          </Flex>
         </Flex>
         {task.description && (
           <Text type="secondary" className="text-xs sm:text-sm line-clamp-2 leading-relaxed">
@@ -47,24 +53,31 @@ export default function TaskCard({ task, onClick, isLoading }: TaskCardProps) {
               <Tooltip title={task.assignee.name}>
                 <Flex align="center" gap={4} className="min-w-0">
                   <Avatar size="small" icon={<UserOutlined />} className="bg-blue-500 shrink-0" />
-                  <Text type="secondary" className="text-xs font-medium truncate max-w-[100px] sm:max-w-[150px] md:max-w-[200px]">
+                  <Text
+                    type="secondary"
+                    className="text-xs font-medium truncate max-w-[100px] sm:max-w-[150px] md:max-w-[200px]"
+                  >
                     {task.assignee.name}
                   </Text>
                 </Flex>
               </Tooltip>
             )}
           </Flex>
-
           {task.dueDate && (
             <Tooltip title={isOverdue ? "Overdue!" : "Due date"}>
               <Flex align="center" gap={4} className={`shrink-0 ${isOverdue ? "text-red-500" : "text-gray-500"}`}>
-                {isOverdue ? <ClockCircleOutlined className="text-xs sm:text-sm" /> : <CalendarOutlined className="text-xs sm:text-sm" />}
+                {isOverdue ? (
+                  <ClockCircleOutlined className="text-xs sm:text-sm" />
+                ) : (
+                  <CalendarOutlined className="text-xs sm:text-sm" />
+                )}
                 <Text type={isOverdue ? "danger" : "secondary"} className="text-xs font-medium whitespace-nowrap">
                   {new Date(task.dueDate).toLocaleDateString()}
                 </Text>
               </Flex>
             </Tooltip>
           )}
+          <QuickEditTask task={task} />
         </Flex>
       </Space>
     </Card>

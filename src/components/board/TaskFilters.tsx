@@ -22,13 +22,20 @@ export default function TaskFilters({
   return (
     <Card className="mb-4 shadow-sm">
       <Space direction="vertical" size="middle" className="w-full">
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center gap-2 mb-2 h-8">
           <FilterOutlined className="text-gray-500" />
           <span className="font-medium text-gray-700">Filters</span>
           {hasActiveFilters && (
-            <Tag color="blue" className="ml-2">
+            <Tag  color="blue" className="ml-2" >
               Active
             </Tag>
+          )}
+          {hasActiveFilters && (
+            <div className="flex justify-end ml-auto ">
+              <Button icon={<ClearOutlined />} onClick={onClearFilters} size="small" type="default">
+                Clear all filters
+              </Button>
+            </div>
           )}
         </div>
 
@@ -106,14 +113,6 @@ export default function TaskFilters({
             ))}
           </Select>
         </div>
-
-        {hasActiveFilters && (
-          <div className="flex justify-end">
-            <Button icon={<ClearOutlined />} onClick={onClearFilters} size="small" type="default">
-              Clear all filters
-            </Button>
-          </div>
-        )}
       </Space>
     </Card>
   );

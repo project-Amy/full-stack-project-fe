@@ -1,12 +1,11 @@
 import { Endpoints, EndpointsKey } from "../../api/endpoints";
-import { invalidateQuery, useMutation } from "../../api/query";
+import { queryClient, useMutation } from "../../api/query";
 import { BASE_URL } from "../../constant/data";
 import type { UpdateTaskDTO } from "../../types/task";
 import useAuthenticatedFetch from "../useAuthenticatedFetch";
 
 interface UpdateTaskParams {
   taskId: string;
-  boardId: string;
   data: UpdateTaskDTO;
 }
 
@@ -26,8 +25,11 @@ export const useUpdateTask = () => {
 
   return useMutation({
     mutationFn: updateTask,
-    onSuccess: (_, variables) => {
-      invalidateQuery([EndpointsKey.GET_BOARD_TASKS, variables.boardId]);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [EndpointsKey.GET_BOARD_TASKS],
+        refetchType: 'active'
+      });
     },
     onError: (error) => {
       console.error("Error updating task:", error);
