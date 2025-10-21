@@ -2,6 +2,7 @@ import { Card, Empty, Space, Tag, Typography } from "antd";
 import { CalendarOutlined, UserOutlined } from "@ant-design/icons";
 import type { Task, TaskStatus } from "../../types";
 import { getPriorityColor } from "../../utils/function";
+import QuickEditTask from "./QuickEditTask";
 
 const { Text } = Typography;
 
@@ -40,26 +41,31 @@ export default function KanbanColumn({ title, tasks, tagColor, onTaskClick }: Ka
                   {task.description}
                 </Text>
               )}
-              <div className="flex items-center gap-2 flex-wrap">
-                <Tag color={getPriorityColor(task.priority)} className="text-xs m-0">
-                  {task.priority}
-                </Tag>
-                {task.dueDate && (
-                  <span className="flex items-center gap-1 text-gray-500">
-                    <CalendarOutlined className="text-xs" />
-                    <Text type="secondary" className="text-xs">
-                      {new Date(task.dueDate).toLocaleDateString()}
-                    </Text>
-                  </span>
-                )}
-                {task.assignee && (
-                  <span className="flex items-center gap-1 text-gray-500">
-                    <UserOutlined className="text-xs" />
-                    <Text type="secondary" className="text-xs">
-                      {task.assignee.name}
-                    </Text>
-                  </span>
-                )}
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Tag color={getPriorityColor(task.priority)} className="text-xs m-0">
+                    {task.priority}
+                  </Tag>
+                  {task.dueDate && (
+                    <span className="flex items-center gap-1 text-gray-500">
+                      <CalendarOutlined className="text-xs" />
+                      <Text type="secondary" className="text-xs">
+                        {new Date(task.dueDate).toLocaleDateString()}
+                      </Text>
+                    </span>
+                  )}
+                  {task.assignee && (
+                    <span className="flex items-center gap-1 text-gray-500">
+                      <UserOutlined className="text-xs" />
+                      <Text type="secondary" className="text-xs">
+                        {task.assignee.name}
+                      </Text>
+                    </span>
+                  )}
+                </div>
+                <div className="ml-auto">
+                  <QuickEditTask task={task} />
+                </div>
               </div>
             </div>
           </div>
