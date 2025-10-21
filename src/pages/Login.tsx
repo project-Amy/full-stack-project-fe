@@ -6,7 +6,7 @@ import { supabase } from "../lib/supabaseClient";
 import type { AuthError } from "@supabase/supabase-js";
 import { useAuthStore } from "../store/useAuthStore";
 import type { LoginFormValues } from "../types/auth";
-import Background from "../components/Background/Background";
+import Background from "../components/background/Background";
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;

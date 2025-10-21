@@ -4,14 +4,13 @@ import { PlusOutlined, MailOutlined } from "@ant-design/icons";
 import CreateBoardModal from "../components/board/modal/CreateBoardModal";
 import PendingInvitesModal from "../components/invitation/PendingInvitesModal";
 import { useGetAllBoard } from "../hooks/board/use-get-all-board";
-
 import { Content } from "antd/es/layout/layout";
 import Navbar from "../components/navigation/Navbar";
 import type { Board } from "../types/board";
 import BoardCard from "../components/board/BoardCard";
 import BoardSkeleton from "../components/board/BoardSkeleton";
-import Background from "../components/Background/Background";
 import { useGetPendingInvitations } from "../hooks/invitation/use-get-pending-invitations";
+import Background from "../components/background/Background";
 
 export default function Home() {
   const { data: data, isLoading } = useGetAllBoard();
