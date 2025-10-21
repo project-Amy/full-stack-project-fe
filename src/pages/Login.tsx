@@ -30,16 +30,16 @@ export default function Login() {
       if (data.user) {
         setUser(values.email, data.user.id);
       }
-      message.success("Login effettuato con successo!");
+      message.success("Login successful!");
       navigate("/");
     } catch (error) {
       const authError = error as AuthError;
       if (authError.message?.includes("Invalid login credentials")) {
-        message.error("Email o password non corretti");
+        message.error("Incorrect email or password");
       } else if (authError.message?.includes("Email not confirmed")) {
-        message.error("Conferma la tua email prima di accedere");
+        message.error("Please confirm your email before logging in");
       } else {
-        message.error(authError.message || "Errore durante il login. Riprova.");
+        message.error(authError.message || "Login error. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -53,8 +53,8 @@ export default function Login() {
         <Card className="w-full max-w-md">
           <Space direction="vertical" size="large" className="w-full text-center">
             <div>
-              <Title level={2}>Accedi</Title>
-              <Paragraph type="secondary">Benvenuto! Inserisci le tue credenziali</Paragraph>
+              <Title level={2}>Login</Title>
+              <Paragraph type="secondary">Welcome! Enter your credentials</Paragraph>
             </div>
 
             <SignForm type="login" onSubmit={handleLogin} loading={loading} formInstance={form} />

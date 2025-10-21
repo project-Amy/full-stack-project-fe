@@ -30,16 +30,16 @@ export default function Register() {
       if (data.user) {
         setUser(values.email, data.user.id);
       }
-      message.success("Registrazione effettuata con successo!");
+      message.success("Registration successful!");
       navigate("/");
     } catch (error) {
       const authError = error as AuthError;
       if (authError.message?.includes("User already registered")) {
-        message.error("Email già in uso");
+        message.error("Email already in use");
       } else if (authError.message?.includes("Password should be at least")) {
-        message.error("La password deve essere di almeno 6 caratteri");
+        message.error("Password must be at least 6 characters");
       } else {
-        message.error(authError.message || "Errore durante la registrazione. Riprova.");
+        message.error(authError.message || "Registration error. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -53,8 +53,8 @@ export default function Register() {
         <Card className="w-full max-w-md">
           <Space direction="vertical" size="large" className="w-full text-center">
             <div>
-              <Title level={2}>Registrati</Title>
-              <Paragraph type="secondary">Crea un nuovo account per iniziare</Paragraph>
+              <Title level={2}>Register</Title>
+              <Paragraph type="secondary">Create a new account to get started</Paragraph>
             </div>
             <SignForm type="register" onSubmit={handleRegister} loading={loading} formInstance={form} />
           </Space>

@@ -4,6 +4,7 @@ import BoardDetails from "./pages/BoardDetails";
 import type { Navigation } from "./types/navigation";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
 import AuthMiddleware from "./components/AuthMiddleware";
 
 export default function App() {
@@ -31,6 +32,10 @@ export default function App() {
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "*",
+      element: <NotFound />,
     },
   ];
 

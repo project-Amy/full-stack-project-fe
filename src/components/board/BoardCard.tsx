@@ -1,5 +1,5 @@
 import { DeleteOutlined, SettingOutlined } from "@ant-design/icons";
-import { Card, Space } from "antd";
+import { Button, Card, Space } from "antd";
 import type { Board } from "../../types/board";
 import { useState } from "react";
 import BoardSettingsModal from "../invitation/BoardSettingsModal";
@@ -37,9 +37,8 @@ export default function BoardCard({ data }: BoardCardProps) {
         />
       )}
       <Card
-        className="h-full cursor-pointer hover:shadow-lg transition-shadow"
+        className="h-full  hover:shadow-lg transition-shadow"
         title={data?.name}
-        onClick={handleCardClick}
         extra={
           <Space size="middle">
             <SettingOutlined
@@ -47,7 +46,7 @@ export default function BoardCard({ data }: BoardCardProps) {
                 e.stopPropagation();
                 setOpenModal(true);
               }}
-              className="text-lg hover:text-blue-500 transition-colors"
+              className="text-lg !hover:text-blue-500 transition-colors rounded-md border border-black/20 p-2"
             />
             {isOwner && (
               <DeleteOutlined
@@ -55,15 +54,18 @@ export default function BoardCard({ data }: BoardCardProps) {
                   e.stopPropagation();
                   setOpenDeleteModal(true);
                 }}
-                className="text-lg hover:text-red-500 transition-colors"
+                className="text-lg !hover:text-red-500 transition-colors rounded-md border border-black/20 p-2"
               />
             )}
           </Space>
         }
       >
-        <Space direction="vertical" size="small" className="w-full">
-          <p className="text-gray-600 m-0 line-clamp-3">{data?.description || "No description"}</p>
-        </Space>
+        <div className="flex flex-col h-full">
+          <p className="text-gray-600 m-0 line-clamp-3 flex-1">{data?.description || "No description"}</p>
+          <div className="flex justify-end mt-4">
+            <Button onClick={handleCardClick}>Open</Button>
+          </div>
+        </div>
       </Card>
     </>
   );
