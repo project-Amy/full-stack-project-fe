@@ -5,7 +5,7 @@ import { useGetBoardById } from "../hooks/board/use-get-board-by-id";
 import { useGetBoardTasks } from "../hooks/board/use-get-board-tasks";
 import { useBoardViewStore } from "../store/useBoardViewStore";
 import { useTaskFilters } from "../hooks/use-task-filters";
-import AuthBackground from "../components/Background/Background";
+
 import Navbar from "../components/navigation/Navbar";
 import BoardHeader from "../components/board/BoardHeader";
 import TaskFilters from "../components/board/TaskFilters";
@@ -18,6 +18,7 @@ import TableView from "../components/board/views/TableView";
 import type { Task } from "../types";
 import type { BoardViewType } from "../types/board";
 import TaskFiltersSkeleton from "../components/board/TaskFiltersSkeleton";
+import Background from "../components/background/Background";
 
 const { Content } = Layout;
 
@@ -92,7 +93,7 @@ export default function BoardDetails() {
 
   return (
     <Layout className="!min-h-screen relative !bg-trasparent" style={{ background: "transparent" }}>
-      <AuthBackground />
+      <Background />
       <Navbar />
       <CreateTaskModal
         open={isTaskModalOpen}
